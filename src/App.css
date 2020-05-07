@@ -4,7 +4,29 @@
   font-family: 'Roboto', sans-serif;
 }
 
-.Title {
+.red {
+  color: red;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.button {
+  background-color: green;
+      color: white;
+      font: inherit;
+      border: 1px solid blue;
+      padding: 8px;
+      cursor: pointer;
+}
+
+.button:hover {
+  background-color: lightgreen;
+  color: black;
+}
+
+/* .Title {
   padding-top: 40px;
   padding-bottom: 40px;
   background-color: #E4E4FF;
@@ -29,4 +51,4 @@ button {
 
   button:hover {
     transform: translateY(-1px);
-  }
+  } */

@@ -1,132 +1,132 @@
 import React, { Component } from 'react';
+import styled from "styled-components";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Container, Row, Col} from 'react-bootstrap';
 import './App.css';
+// import Radium, { StyleRoot } from 'radium';
 import Person from './Person/Person';
-import UserOutput from './UserOutput/UserOutput';
-import UserInput from './UserInput/UserInput';
+
+// const StyledButton = styled.button`
+//       background-color: ${props => props.alt ? 'red' : 'green'};
+//       color: white;
+//       font: inherit;
+//       border: 1px solid blue;
+//       padding: 8px;
+//       cursor: pointer;
+      
+//       &:hover {
+//         background-color: ${props => props.alt ? 'salmon' : 'lightgreen'};
+//         color: black;
+//       }
+// `;
 
 class App extends Component {
   state = {
     persons: [
-      { name: 'Max', age: 28 },
-      { name: 'Manu', age: 29 },
-      { name: 'Stephanie', age: 26 }
-    ],
-    usernames: [
-      {username: 'Scarlette'},
-      {username: 'Brooklyn'},
-      {username: 'Paula'}
+      { id: '123', name: 'Max', age: 28 },
+      { id: '238', name: 'Manu', age: 29 },
+      { id: '289', name: 'Stephanie', age: 26 }
     ],
     showPersons: false
   };
 
-  // switchUsernameHandler = (newUsername) => {
+  // switchNameHandler = (newName) => {
   //   this.setState({
-  //     usernames: [
-  //       { username: 'scarlettelesma'},
-  //       { username: 'brooklynrg'},
-  //       { username: 'paulapbpb' }
+  //     persons: [
+  //       { name: newName, age: 28 },
+  //       { name: 'Manu', age: 29 },
+  //       { name: 'Stephanie', age: 27 }
   //     ]
   //   });
   // };
 
-  // usernameChangedHandler = (event) => {
-  //   this.setState( {
-  //     usernames: [
-  //       { username: event.target.value },
-  //       { username: 'brooklynrg' },
-  //       { username: 'paulapbpb' }
-  //     ]
-  //   })
-  // }
-
-
-  switchNameHandler = (newName) => {
-    // console.log('Was clicked!');
-    // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
-    this.setState({
-      persons: [
-        { name: newName, age: 28 },
-        { name: 'Manu', age: 29 },
-        { name: 'Stephanie', age: 27 }
-      ]
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
     });
-  };
 
-  nameChangedHandler = (event) => {
-    this.setState( {
-      persons: [
-        { name: 'Max', age: 28 },
-        { name: event.target.value, age: 29 },
-        { name: 'Stephanie', age: 27 }
-      ]
-    })
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+
+    person.name = event.target.value;
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState( {persons: persons});
+  }
+
+  deletePersonHandler = (personIndex) => {
+    // const persons = this.state.persons.slice();
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({persons: persons});
+    console.log(persons);
+    console.log(this.state.persons);
   }
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow});
+    this.setState( {showPersons: !doesShow} );
   }
 
   render() {
-    const style = {
-      // backgroundColor: 'white',
-      // font: 'inherit',
-      // border: '1px solid',
-      // padding: '8px',
-      // cursor: 'pointer'
-    };
+    // const style = {
+    //   backgroundColor: 'green',
+    //   color: 'white',
+    //   font: 'inherit',
+    //   border: '1px solid blue',
+    //   padding: '8px',
+    //   cursor: 'pointer',
+
+    //  radium style constant 
+    // ':hover': {
+    //     backgroundColor: 'lightgreen',
+    //     color: 'black'
+    //   }
+    // };
 
     let persons = null;
 
     if (this.state.showPersons) {
       persons = (
       <div>
-        {this.state.persons.map(person => {
-          return <Person 
+        {this.state.persons.map((person, index) => {
+          return <Person
+          click ={() => this.deletePersonHandler(index)} 
           name={person.name} 
-          age={person.age} />
+          age={person.age} 
+          key = {person.id}
+          changed = {(event) => this.nameChangedHandler(event, person.id)} />
         })}
-        {/* <Person
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age}
-        />
-        <Person
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-        click={this.switchNameHandler.bind(this, 'Max!')} changed={this.nameChangedHandler} >My Hobbies: Racing
-        </Person>
-        <Person
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age}
-        /> */}
        </div>
       );
+      // style.backgroundColor = 'red';
+      // style[':hover'] = {
+      //   backgroundColor: 'salmon',
+      //   color: 'black'
+      // }
     }
+
+    const classes = [];
+    if (this.state.persons.length <=2) {
+      classes.push('red'); // classes = ['red']
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push('bold'); // classes = ['red','bold']
+    }
+
 
     return (
       <div className="App">
         <h1 className="Title">Name Changing App</h1>
-        <button style={style} 
+        <p className={classes.join(' ')}>This is a paragraph</p>
+        <button alt={this.state.showPersons}
+        // style={style} 
         onClick ={this.togglePersonsHandler}>Toggle Names</button>
         {persons}
 
-        {/* <button style={style} onClick={() => this.switchUsernameHandler()}>Switch To Usernames</button> */}
-        {/* <UserInput change={this.switchUsernameHandler.bind(this, 'hello')}/> */}
-
-        {/* <row>
-        <UserInput changed={this.usernameChangedHandler}/>
-        <UserOutput username={this.state.usernames[0].username}/>
-        <UserOutput username= {this.state.usernames[1].username}/>
-        <UserOutput username={this.state.usernames[2].username}/>
-        </row> */}
-
-
-
       </div>
     );
-    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
 }
 
