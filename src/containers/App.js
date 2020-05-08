@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import classes from './App.css';
 // import Radium, { StyleRoot } from 'radium';
-import Person from './Person/Person';
+import Persons from '../components/Persons/Persons';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary'
 
 // const StyledButton = styled.button`
 //       background-color: ${props => props.alt ? 'red' : 'green'};
@@ -86,18 +87,15 @@ class App extends Component {
     // };
 
     let persons = null;
+    let btnClass = [classes.Button];
 
     if (this.state.showPersons) {
       persons = (
       <div>
-        {this.state.persons.map((person, index) => {
-          return <Person
-          click ={() => this.deletePersonHandler(index)} 
-          name={person.name} 
-          age={person.age} 
-          key = {person.id}
-          changed = {(event) => this.nameChangedHandler(event, person.id)} />
-        })}
+        <Persons
+        persons={this.state.persons}
+        clicked={this.deletePersonHandler}
+        changed={this.nameChangedHandler}/>
        </div>
       );
       // style.backgroundColor = 'red';
@@ -105,6 +103,8 @@ class App extends Component {
       //   backgroundColor: 'salmon',
       //   color: 'black'
       // }
+
+      btnClass.push(classes.Red);
     }
 
     const assignedClasses = [];
@@ -120,7 +120,7 @@ class App extends Component {
       <div className={classes.App}>
         <h1 className="Title">Name Changing App</h1>
         <p className={assignedClasses.join(' ')}>This is a paragraph</p>
-        <button className={classes.Button} 
+        <button className={btnClass.join(' ')} 
         // style={style} 
         onClick ={this.togglePersonsHandler}>Toggle Names</button>
         {persons}

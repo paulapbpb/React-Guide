@@ -26,6 +26,14 @@
   color: black;
 }
 
+.Button.Red {
+  background-color: red;
+}
+
+.Button.Red:hover {
+  background-color: salmon;
+}
+
 /* .Title {
   padding-top: 40px;
   padding-bottom: 40px;
